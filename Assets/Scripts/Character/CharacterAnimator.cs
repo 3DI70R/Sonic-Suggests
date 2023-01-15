@@ -29,13 +29,21 @@ public class CharacterAnimator : MonoBehaviour
                 Time.deltaTime * 25f);
     }
 
+    public void Kill() {
+        animator.SetTrigger("Dead");
+        animator.SetBool("Jump", false);
+        animator.SetBool("Normal", false);
+    }
+
     public void Normal() {
         animator.SetTrigger("Normal");
         animator.SetBool("Jump", false);
+        animator.SetBool("Dead", false);
     }
 
     public void Jump() {
         animator.SetTrigger("Jump");
         animator.SetBool("Normal", false);
+        animator.SetBool("Dead", false);
     }
 }

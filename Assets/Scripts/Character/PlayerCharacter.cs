@@ -15,16 +15,36 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
 
     public AudioClip jumpSound;
     public AudioClip ringLossSound;
+    public AudioClip deathSound;
+    public AudioClip drownSound;
 
     private bool isJumping;
     private bool jump;
     private Vector2 direction;
     private float invisibilityTime;
+    private bool isKilled;
+    private float respawnTime;
 
     private void Update() {
+        CheckForRespawn();
         UpdateMovement();
         CheckForHittable();
         UpdateInvisibilityAnim();
+    }
+
+    private void CheckForRespawn() {
+        if(isKilled) {
+            if (respawnTime > 0) {
+                respawnTime -= Time.deltaTime;
+            }
+
+            if(respawnTime <= 0) {
+                isKilled = false;
+                transform.position = respawnPoint.transform.position;
+                character.characterRigidbody.velocity = Vector3.zero;
+                animator.Normal();
+            }
+        }
     }
 
     private void UpdateInvisibilityAnim() {
@@ -70,6 +90,12 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
     }
 
     private void UpdateMovement() {
+
+        if(isKilled) {
+            character.SetVelocity(Vector2.zero);
+            return;
+        }
+
         var v = character.characterRigidbody.velocity;
 
         if(character.OnGround && isJumping && v.y < 0.1) {
@@ -105,8 +131,8 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
     }
 
     public void OnPlayerHit(GameObject enemy, bool ignoreProtection) {
-        if(invisibilityTime <= 0) {
-            if(ringCount >= 0) {
+        if(invisibilityTime <= 0 && !isKilled) {
+            if(ringCount > 0) {
                 for(int i = 0; i < ringCount; i++) {
                     var obj = Instantiate(droppedRingPrefab);
                     var body = obj.GetComponent<Rigidbody>();
@@ -124,7 +150,8 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
                 invisibilityTime = 5f;
                 ringCount = 0;
             } else {
-                // dead
+                audioSource.PlayOneShot(deathSound);
+                Kill();
             }
         }
     }
@@ -137,11 +164,14 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
 
     public void OnDrown()
     {
+        audioSource.PlayOneShot(drownSound);
         Kill();
     }
 
     private void Kill()
     {
-        
+        isKilled = true;
+        respawnTime = 3f;
+        animator.Kill();
     }
 }

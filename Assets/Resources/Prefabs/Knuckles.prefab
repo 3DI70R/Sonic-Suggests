@@ -994,8 +994,11 @@ MonoBehaviour:
   ringCount: 0
   characterRenderer: {fileID: 0}
   droppedRingPrefab: {fileID: 0}
+  respawnPoint: {fileID: 0}
   jumpSound: {fileID: 8300000, guid: 731e22b9d2faf4f6f9b083fd57115c41, type: 3}
   ringLossSound: {fileID: 8300000, guid: 98cd9577daf70e248a89d945db6afbfc, type: 3}
+  deathSound: {fileID: 8300000, guid: f20c78a9637924f50ae391ae89dff69f, type: 3}
+  drownSound: {fileID: 8300000, guid: 711b6f22c2e452a43906aa605c5d6499, type: 3}
 --- !u!136 &136539971535917096
 CapsuleCollider:
   m_ObjectHideFlags: 1
