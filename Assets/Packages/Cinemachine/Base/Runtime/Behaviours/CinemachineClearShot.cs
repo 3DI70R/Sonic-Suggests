@@ -21,7 +21,7 @@ namespace Cinemachine
     /// 
     /// You can also define custom blends between the ClearShot children.
     /// </summary>
-    [DocumentationSorting(12, DocumentationSortingAttribute.Level.UserRef)]
+    [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
     [ExecuteInEditMode, DisallowMultipleComponent]
     [AddComponentMenu("Cinemachine/CinemachineClearShot")]
     public class CinemachineClearShot : CinemachineVirtualCameraBase
@@ -126,14 +126,14 @@ namespace Cinemachine
                 vcam.RemovePostPipelineStageHook(d);
         }
 
-        /// <summary>Called by CinemachineCore at designated update time
+        /// <summary>Internal use only.  Called by CinemachineCore at designated update time
         /// so the vcam can position itself and track its targets.  This implementation
         /// updates all the children, chooses the best one, and implements any required blending.</summary>
         /// <param name="worldUp">Default world Up, set by the CinemachineBrain</param>
         /// <param name="deltaTime">Delta time for time-based effects (ignore if less than 0)</param>
-        public override void UpdateCameraState(Vector3 worldUp, float deltaTime)
+        public override void InternalUpdateCameraState(Vector3 worldUp, float deltaTime)
         {
-            //UnityEngine.Profiling.Profiler.BeginSample("CinemachineClearShot.UpdateCameraState");
+            //UnityEngine.Profiling.Profiler.BeginSample("CinemachineClearShot.InternalUpdateCameraState");
             if (!PreviousStateIsValid)
                 deltaTime = -1;
 
@@ -406,8 +406,14 @@ namespace Cinemachine
             if (camA == null || activeBlend != null)
             {
                 // Blend from the current camera position
-                CameraState state = (activeBlend != null) ? activeBlend.State : State;
-                camA = new StaticPointVirtualCamera(state, (activeBlend != null) ? "Mid-blend" : "(none)");
+                CameraState state = State;
+                if (activeBlend == null)
+                    camA = new StaticPointVirtualCamera(state, "(none)");
+                else
+                {
+                    state = activeBlend.State;
+                    camA = new BlendSourceVirtualCamera(activeBlend, deltaTime);
+                }
             }
             return new CinemachineBlend(camA, camB, blendCurve, duration, 0);
         }
@@ -425,7 +431,7 @@ namespace Cinemachine
             {
                 m_RandomizedChilden = null;
                 LiveChild = null;
-                UpdateCameraState(worldUp, deltaTime);
+                InternalUpdateCameraState(worldUp, deltaTime);
             }
         }
     }

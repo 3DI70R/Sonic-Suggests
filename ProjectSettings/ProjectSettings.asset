@@ -7,7 +7,7 @@ PlayerSettings:
   productGUID: dc8dafb55d988cb49929f673a9f744db
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
-  defaultScreenOrientation: 4
+  defaultScreenOrientation: 3
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
@@ -60,7 +60,7 @@ PlayerSettings:
   allowedAutorotateToLandscapeRight: 1
   allowedAutorotateToLandscapeLeft: 1
   useOSAutorotation: 1
-  use32BitDisplayBuffer: 1
+  use32BitDisplayBuffer: 0
   preserveFramebufferAlpha: 0
   disableDepthAndStencilBuffers: 0
   androidBlitType: 0
@@ -76,7 +76,7 @@ PlayerSettings:
   hideHomeButton: 0
   submitAnalytics: 1
   usePlayerLog: 1
-  bakeCollisionMeshes: 0
+  bakeCollisionMeshes: 1
   forceSingleInstance: 0
   resizableWindow: 1
   useMacAppStoreValidation: 0
@@ -153,11 +153,12 @@ PlayerSettings:
   protectGraphicsMemory: 0
   useHDRDisplay: 0
   m_ColorGamuts: 00000000
-  targetPixelDensity: 30
-  resolutionScalingMode: 0
+  targetPixelDensity: 240
+  resolutionScalingMode: 1
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Android: ru.threedisevenzeror.sonicsuggests
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
@@ -172,7 +173,7 @@ PlayerSettings:
   CreateWallpaper: 0
   APKExpansionFiles: 0
   keepLoadedShadersAlive: 0
-  StripUnusedMeshComponents: 0
+  StripUnusedMeshComponents: 1
   VertexChannelCompressionMask:
     serializedVersion: 2
     m_Bits: 238
@@ -558,14 +559,15 @@ PlayerSettings:
   webGLUseWasm: 0
   webGLCompressionFormat: 1
   scriptingDefineSymbols:
-    1: UNITY_POST_PROCESSING_STACK_V1
-    4: UNITY_POST_PROCESSING_STACK_V1
-    7: UNITY_POST_PROCESSING_STACK_V1
+    1: UNITY_POST_PROCESSING_STACK_V1;CROSS_PLATFORM_INPUT
+    4: UNITY_POST_PROCESSING_STACK_V1;CROSS_PLATFORM_INPUT;MOBILE_INPUT
+    7: UNITY_POST_PROCESSING_STACK_V1;CROSS_PLATFORM_INPUT;MOBILE_INPUT
     13: UNITY_POST_PROCESSING_STACK_V1
-    17: UNITY_POST_PROCESSING_STACK_V1
+    14: MOBILE_INPUT
+    17: UNITY_POST_PROCESSING_STACK_V1;MOBILE_INPUT
     18: UNITY_POST_PROCESSING_STACK_V1
     19: UNITY_POST_PROCESSING_STACK_V1
-    20: UNITY_POST_PROCESSING_STACK_V1
+    20: UNITY_POST_PROCESSING_STACK_V1;MOBILE_INPUT
     21: UNITY_POST_PROCESSING_STACK_V1
     23: UNITY_POST_PROCESSING_STACK_V1
     24: UNITY_POST_PROCESSING_STACK_V1
@@ -573,7 +575,8 @@ PlayerSettings:
     26: UNITY_POST_PROCESSING_STACK_V1
     27: UNITY_POST_PROCESSING_STACK_V1
   platformArchitecture: {}
-  scriptingBackend: {}
+  scriptingBackend:
+    Android: 0
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 0

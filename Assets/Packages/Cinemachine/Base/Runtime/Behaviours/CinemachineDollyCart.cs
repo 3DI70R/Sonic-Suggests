@@ -8,7 +8,7 @@ namespace Cinemachine
     /// It can be used to animate any objects along a path, or as a Follow target for 
     /// Cinemachine Virtual Cameras.
     /// </summary>
-    [DocumentationSorting(21f, DocumentationSortingAttribute.Level.UserRef)]
+    [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
     [ExecuteInEditMode]
     public class CinemachineDollyCart : MonoBehaviour
     {
@@ -61,7 +61,7 @@ namespace Cinemachine
         {
             if (m_Path != null)
             {
-                m_Position = m_Path.NormalizeUnit(distanceAlongPath, m_PositionUnits);
+                m_Position = m_Path.StandardizeUnit(distanceAlongPath, m_PositionUnits);
                 transform.position = m_Path.EvaluatePositionAtUnit(m_Position, m_PositionUnits);
                 transform.rotation = m_Path.EvaluateOrientationAtUnit(m_Position, m_PositionUnits);
             }

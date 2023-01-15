@@ -7,13 +7,13 @@ namespace Cinemachine
     /// <summary>Defines a world-space path, consisting of an array of waypoints,
     /// each of which has position, tangent, and roll settings.  Bezier interpolation
     /// is performed between the waypoints, to get a smooth and continuous path.</summary>
-    [DocumentationSorting(18, DocumentationSortingAttribute.Level.UserRef)]
+    [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
     [AddComponentMenu("Cinemachine/CinemachinePath")]
     [SaveDuringPlay]
     public class CinemachinePath : CinemachinePathBase
     {
         /// <summary>A waypoint along the path</summary>
-        [DocumentationSorting(18.2f, DocumentationSortingAttribute.Level.UserRef)]
+        [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
         [Serializable] public struct Waypoint
         {
             /// <summary>Position in path-local space</summary>
@@ -65,7 +65,7 @@ namespace Cinemachine
         /// <summary>Returns normalized position</summary>
         float GetBoundingIndices(float pos, out int indexA, out int indexB)
         {
-            pos = NormalizePos(pos);
+            pos = StandardizePos(pos);
             int rounded = Mathf.RoundToInt(pos);
             if (Mathf.Abs(pos - rounded) < UnityVectorExtensions.Epsilon)
                 indexA = indexB = (rounded == m_Waypoints.Length) ? 0 : rounded;

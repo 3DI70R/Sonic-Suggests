@@ -14,7 +14,7 @@ namespace Cinemachine
     /// In Auto-Dolly mode, the Path Position field is animated automatically every frame by finding
     /// the position on the path that's closest to the virtual camera's Follow target.
     /// </summary>
-    [DocumentationSorting(7, DocumentationSortingAttribute.Level.UserRef)]
+    [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
     [AddComponentMenu("")] // Don't display in add component menu
     [RequireComponent(typeof(CinemachinePipeline))]
     [SaveDuringPlay]
@@ -63,7 +63,7 @@ namespace Cinemachine
         public float m_ZDamping = 1f;
 
         /// <summary>Different ways to set the camera's up vector</summary>
-        [DocumentationSorting(7.1f, DocumentationSortingAttribute.Level.UserRef)]
+        [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
         public enum CameraUpMode
         {
             /// <summary>Leave the camera's up vector alone.  It will be set according to the Brain's WorldUp.</summary>
@@ -101,7 +101,7 @@ namespace Cinemachine
         public float m_RollDamping = 0f;
 
         /// <summary>Controls how automatic dollying occurs</summary>
-        [DocumentationSorting(7.2f, DocumentationSortingAttribute.Level.UserRef)]
+        [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
         [Serializable]
         public struct AutoDolly
         {
@@ -165,18 +165,15 @@ namespace Cinemachine
             // Get the new ideal path base position
             if (m_AutoDolly.m_Enabled && FollowTarget != null)
             {
-                float prevPos = m_PreviousPathPosition;
-                if (m_PositionUnits == CinemachinePathBase.PositionUnits.Distance)
-                    prevPos = m_Path.GetPathPositionFromDistance(prevPos);
+                float prevPos = m_Path.ToNativePathUnits(m_PreviousPathPosition, m_PositionUnits);
                 // This works in path units
                 m_PathPosition = m_Path.FindClosestPoint(
-                    FollowTarget.transform.position,
+                    FollowTargetPosition,
                     Mathf.FloorToInt(prevPos),
                     (deltaTime < 0 || m_AutoDolly.m_SearchRadius <= 0) 
                         ? -1 : m_AutoDolly.m_SearchRadius,
                     m_AutoDolly.m_SearchResolution);
-                if (m_PositionUnits == CinemachinePathBase.PositionUnits.Distance)
-                    m_PathPosition = m_Path.GetPathDistanceFromPosition(m_PathPosition);
+                m_PathPosition = m_Path.FromPathNativeUnits(m_PathPosition, m_PositionUnits);
 
                 // Apply the path position offset
                 m_PathPosition += m_AutoDolly.m_PositionOffset;
@@ -189,8 +186,8 @@ namespace Cinemachine
                 float maxUnit = m_Path.MaxUnit(m_PositionUnits);
                 if (maxUnit > 0)
                 {
-                    float prev = m_Path.NormalizeUnit(m_PreviousPathPosition, m_PositionUnits);
-                    float next = m_Path.NormalizeUnit(newPathPosition, m_PositionUnits);
+                    float prev = m_Path.StandardizeUnit(m_PreviousPathPosition, m_PositionUnits);
+                    float next = m_Path.StandardizeUnit(newPathPosition, m_PositionUnits);
                     if (m_Path.Looped && Mathf.Abs(next - prev) > maxUnit / 2)
                     {
                         if (next > prev)
@@ -278,11 +275,11 @@ namespace Cinemachine
                     return Quaternion.LookRotation(pathOrientation * Vector3.forward, up);
                 case CameraUpMode.FollowTarget:
                     if (FollowTarget != null)
-                        return FollowTarget.rotation;
+                        return FollowTargetRotation;
                     break;
                 case CameraUpMode.FollowTargetNoRoll:
                     if (FollowTarget != null)
-                        return Quaternion.LookRotation(FollowTarget.rotation * Vector3.forward, up);
+                        return Quaternion.LookRotation(FollowTargetRotation * Vector3.forward, up);
                     break;
             }
             return Quaternion.LookRotation(transform.rotation * Vector3.forward, up);

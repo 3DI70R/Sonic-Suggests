@@ -27,7 +27,7 @@ namespace Cinemachine
     /// Although this component was designed for orthographic cameras, it works equally  
     /// well with persective cameras and can be used in 3D environments.
     /// </summary>
-    [DocumentationSorting(5.5f, DocumentationSortingAttribute.Level.UserRef)]
+    [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
     [ExecuteInEditMode] // for OnGUI
     [AddComponentMenu("")] // Don't display in add component menu
     [RequireComponent(typeof(CinemachinePipeline))]
@@ -54,10 +54,15 @@ namespace Cinemachine
         [Range(3, 30)]
         public float m_LookaheadSmoothing = 10;
 
+        /// <summary>If checked, movement along the Y axis will be ignored for lookahead calculations</summary>
+        [Tooltip("If checked, movement along the Y axis will be ignored for lookahead calculations")]
+        public bool m_LookaheadIgnoreY;
+
         /// <summary>How aggressively the camera tries to maintain the offset in the X-axis.
         /// Small numbers are more responsive, rapidly translating the camera to keep the target's
         /// x-axis offset.  Larger numbers give a more heavy slowly responding camera.
         /// Using different settings per axis can yield a wide range of camera behaviors</summary>
+        [Space]
         [Range(0f, 20f)]
         [Tooltip("How aggressively the camera tries to maintain the offset in the X-axis.  Small numbers are more responsive, rapidly translating the camera to keep the target's x-axis offset.  Larger numbers give a more heavy slowly responding camera. Using different settings per axis can yield a wide range of camera behaviors.")]
         public float m_XDamping = 1f;
@@ -92,6 +97,10 @@ namespace Cinemachine
         /// <summary>The distance along the camera axis that will be maintained from the Follow target</summary>
         [Tooltip("The distance along the camera axis that will be maintained from the Follow target")]
         public float m_CameraDistance = 10f;
+
+#if false // experiment - do not commit
+        public bool m_HorizontalMovementOnly = false;
+#endif
 
         /// <summary>Camera will not move horizontally if the target is within this range of the position</summary>
         [Space]
@@ -137,7 +146,7 @@ namespace Cinemachine
         public float m_BiasY = 0f;
 
         /// <summary>What screen dimensions to consider when framing</summary>
-        [DocumentationSorting(4.01f, DocumentationSortingAttribute.Level.UserRef)]
+        [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
         public enum FramingMode
         {
             /// <summary>Consider only the horizontal dimension.  Vertical framing is ignored.</summary>
@@ -311,7 +320,8 @@ namespace Cinemachine
 
             //UnityEngine.Profiling.Profiler.BeginSample("CinemachineFramingTransposer.MutateCameraState");
             Vector3 camPosWorld = m_PreviousCameraPosition;
-            curState.ReferenceLookAt = FollowTarget.position;
+            curState.ReferenceLookAt = FollowTargetPosition;
+            m_Predictor.IgnoreY = m_LookaheadIgnoreY;
             m_Predictor.Smoothing = m_LookaheadSmoothing;
             m_Predictor.AddPosition(curState.ReferenceLookAt);
             TrackedPoint = (m_LookaheadTime > 0) 
@@ -368,7 +378,22 @@ namespace Cinemachine
                 cameraOffset = hard + Damper.Damp(
                     cameraOffset - hard, new Vector3(m_XDamping, m_YDamping, m_ZDamping), deltaTime);
             }
-            curState.RawPosition = m_PreviousCameraPosition = localToWorld * (cameraPos + cameraOffset);
+            curState.RawPosition = localToWorld * (cameraPos + cameraOffset);
+#if false // experiment - do not commit
+            if (m_HorizontalMovementOnly)
+            {
+                Plane p = new Plane(worldToLocal * Vector3.up, targetPos);
+                Ray ray0 = new Ray(cameraPos, Vector3.forward);
+                Ray ray1 = new Ray(cameraPos + cameraOffset, Vector3.forward);
+                float t0, t1;
+                if (p.Raycast(ray0, out t0) && p.Raycast(ray1, out t1))
+                {
+                    Vector3 offset = ray1.GetPoint(t1) - ray0.GetPoint(t0);
+                    curState.RawPosition = localToWorld * (cameraPos + offset);
+                }
+            }
+#endif
+            m_PreviousCameraPosition = curState.RawPosition;
             //UnityEngine.Profiling.Profiler.EndSample();
         }
 

@@ -51,7 +51,7 @@ namespace Cinemachine
     /// <seealso cref="CinemachineComposer"/>
     /// <seealso cref="CinemachineTransposer"/>
     /// <seealso cref="CinemachineBasicMultiChannelPerlin"/>
-    [DocumentationSorting(1, DocumentationSortingAttribute.Level.UserRef)]
+    [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
     [ExecuteInEditMode, DisallowMultipleComponent]
     [AddComponentMenu("Cinemachine/CinemachineVirtualCamera")]
     public class CinemachineVirtualCamera : CinemachineVirtualCameraBase
@@ -111,12 +111,13 @@ namespace Cinemachine
             set { m_Follow = value; }
         }
 
-        /// <summary>Called by CinemachineCore at LateUpdate time
+        /// <summary>Internal use only.  Do not call this method.  
+        /// Called by CinemachineCore at the appropriate Update time
         /// so the vcam can position itself and track its targets.  This class will
         /// invoke its pipeline and generate a CameraState for this frame.</summary>
-        override public void UpdateCameraState(Vector3 worldUp, float deltaTime)
+        override public void InternalUpdateCameraState(Vector3 worldUp, float deltaTime)
         {
-            //UnityEngine.Profiling.Profiler.BeginSample("CinemachineVirtualCamera.UpdateCameraState");
+            //UnityEngine.Profiling.Profiler.BeginSample("CinemachineVirtualCamera.InternalUpdateCameraState");
             if (!PreviousStateIsValid)
                 deltaTime = -1;
 
@@ -403,13 +404,28 @@ namespace Cinemachine
             m_ComponentPipeline = list.ToArray();
         }
 
+        private Transform mCachedLookAtTarget;
+        private CinemachineVirtualCameraBase mCachedLookAtTargetVcam;
         private CameraState CalculateNewState(Vector3 worldUp, float deltaTime)
         {
             // Initialize the camera state, in case the game object got moved in the editor
             CameraState state = PullStateFromVirtualCamera(worldUp);
 
-            if (LookAt != null)
-                state.ReferenceLookAt = LookAt.position;
+            Transform lookAtTarget = LookAt;
+            if (lookAtTarget != mCachedLookAtTarget)
+            {
+                mCachedLookAtTarget = lookAtTarget;
+                mCachedLookAtTargetVcam = null;
+                if (lookAtTarget != null)
+                    mCachedLookAtTargetVcam = lookAtTarget.GetComponent<CinemachineVirtualCameraBase>();
+            }
+            if (lookAtTarget != null)
+            {
+                if (mCachedLookAtTargetVcam != null)
+                    state.ReferenceLookAt = mCachedLookAtTargetVcam.State.FinalPosition;
+                else
+                    state.ReferenceLookAt = lookAtTarget.position;
+            }
 
             // Update the state by invoking the component pipeline
             CinemachineCore.Stage curStage = CinemachineCore.Stage.Body;

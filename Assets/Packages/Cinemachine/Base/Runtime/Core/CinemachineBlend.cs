@@ -98,8 +98,8 @@ namespace Cinemachine
             // Make sure both cameras have been updated (they are not necessarily
             // enabled, and only enabled cameras get updated automatically
             // every frame)
-            CinemachineCore.Instance.UpdateVirtualCamera(CamA, worldUp, deltaTime);
-            CinemachineCore.Instance.UpdateVirtualCamera(CamB, worldUp, deltaTime);
+            CamA.UpdateCameraState(worldUp, deltaTime);
+            CamB.UpdateCameraState(worldUp, deltaTime);
         }
 
         /// <summary>Compute the blended CameraState for the current time in the blend.</summary>
@@ -109,11 +109,11 @@ namespace Cinemachine
     /// <summary>Definition of a Camera blend.  This struct holds the information
     /// necessary to generate a suitable AnimationCurve for a Cinemachine Blend.</summary>
     [Serializable]
-    [DocumentationSorting(10.2f, DocumentationSortingAttribute.Level.UserRef)]
+    [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
     public struct CinemachineBlendDefinition
     {
         /// <summary>Supported predefined shapes for the blend curve.</summary>
-        [DocumentationSorting(10.21f, DocumentationSortingAttribute.Level.UserRef)]
+        [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
         public enum Style
         {
             /// <summary>Zero-length blend</summary>
@@ -129,7 +129,9 @@ namespace Cinemachine
             /// <summary>Hard out of the outgoing, and easy into the incoming</summary>
             HardOut,
             /// <summary>Linear blend.  Mechanical-looking.</summary>
-            Linear
+            Linear,
+            /// <summary>Custom blend curve.</summary>
+            Custom
         };
 
         /// <summary>The shape of the blend curve.</summary>
@@ -147,13 +149,19 @@ namespace Cinemachine
         {
             m_Style = style;
             m_Time = time;
+            m_CustomCurve = null;
         }
 
         /// <summary>
-        /// An AnimationCurve specifying the interpolation duration and value
-        /// for this camera blend. The time of the last key frame is assumed to the be the
-        /// duration of the blend. Y-axis values must be in range [0,1] (internally clamped
-        /// within Blender) and time must be in range of [0, +infinity)
+        /// A user-defined AnimationCurve, used only if style is Custom.  
+        /// Curve MUST be normalized, i.e. time range [0...1], value range [0...1].
+        /// </summary>
+        public AnimationCurve m_CustomCurve;
+
+        /// <summary>
+        /// A normalized AnimationCurve specifying the interpolation curve 
+        /// for this camera blend. Y-axis values must be in range [0,1] (internally clamped
+        /// within Blender) and time must be in range of [0, 1].
         /// </summary>
         public AnimationCurve BlendCurve
         {
@@ -200,6 +208,12 @@ namespace Cinemachine
                         return curve;
                     }
                     case Style.Linear: return AnimationCurve.Linear(0f, 0f, time, 1f);
+                    case Style.Custom: 
+                    {
+                        if (m_CustomCurve == null)
+                            m_CustomCurve = new AnimationCurve();
+                        return m_CustomCurve;
+                    }
                 }
             }
         }

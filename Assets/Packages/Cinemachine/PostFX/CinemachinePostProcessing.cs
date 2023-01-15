@@ -27,7 +27,7 @@ namespace Cinemachine.PostFX
     /// applying them to the current Post-Processing profile, provided that profile has a
     /// DepthOfField effect that is enabled.
     /// </summary>
-    [DocumentationSorting(101, DocumentationSortingAttribute.Level.UserRef)]
+    [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
     [ExecuteInEditMode]
     [AddComponentMenu("")] // Hide in menu
     [SaveDuringPlay]
@@ -140,6 +140,7 @@ namespace Cinemachine.PostFX
                 volumes[i].sharedProfile = null;
                 volumes[i].profile = null;
             }
+            bool isFirst = true;
             for (int i = 0; i < numBlendables; ++i)
             {
                 var b = state.GetCustomBlendable(i);
@@ -149,8 +150,9 @@ namespace Cinemachine.PostFX
                     PostProcessVolume v = volumes[i];
                     v.sharedProfile = src.Profile;
                     v.isGlobal = true;
-                    v.priority = float.MaxValue-1;
-                    v.weight = b.m_Weight;
+                    v.priority = float.MaxValue-(numBlendables-i)-1;
+                    v.weight = (isFirst && i < numBlendables-1) ? 1 : b.m_Weight;
+                    isFirst = false;
                 }
             }
             //UnityEngine.Profiling.Profiler.EndSample();

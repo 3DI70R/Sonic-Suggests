@@ -13,7 +13,7 @@ namespace Cinemachine
         public static readonly int kStreamingVersion = 20170927;
 
         /// <summary>Human-readable Cinemachine Version</summary>
-        public static readonly string kVersionString = "2.1";
+        public static readonly string kVersionString = "2.1.10";
 
         /// <summary>
         /// Stages in the Cinemachine Component pipeline, used for
@@ -166,9 +166,9 @@ namespace Cinemachine
             }
             //UnityEngine.Profiling.Profiler.EndSample();
 
-            // Then all the top-level cameras
+            // Then all the top-level cameras - in reverse order, so that active cam is updated last
             numCameras = VirtualCameraCount;
-            for (int i = 0; i < numCameras; ++i)
+            for (int i = numCameras - 1; i >= 0; --i)
                 UpdateVirtualCamera(GetVirtualCamera(i), worldUp, deltaTime);
             //UnityEngine.Profiling.Profiler.EndSample();
         }
@@ -234,7 +234,7 @@ namespace Cinemachine
                 while (status.lastUpdateSubframe < subframes)
                 {
 //Debug.Log(vcam.Name + ": frame " + Time.frameCount + "." + status.lastUpdateSubframe + ", " + CurrentUpdateFilter + ", deltaTime = " + deltaTime);
-                    vcam.UpdateCameraState(worldUp, deltaTime);
+                    vcam.InternalUpdateCameraState(worldUp, deltaTime);
                     ++status.lastUpdateSubframe;
                 }
                 status.lastUpdateFrame = now;

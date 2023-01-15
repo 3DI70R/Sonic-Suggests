@@ -17,7 +17,7 @@ namespace Cinemachine
     /// In order to use this behaviour, you must have an animated target (i.e. an object
     /// animated with a state machine) to drive the behaviour.
     /// </summary>
-    [DocumentationSorting(13, DocumentationSortingAttribute.Level.UserRef)]
+    [DocumentationSorting(DocumentationSortingAttribute.Level.UserRef)]
     [ExecuteInEditMode, DisallowMultipleComponent]
     [AddComponentMenu("Cinemachine/CinemachineStateDrivenCamera")]
     public class CinemachineStateDrivenCamera : CinemachineVirtualCameraBase
@@ -95,7 +95,7 @@ namespace Cinemachine
 
         /// <summary>Internal API for the Inspector editor.  This implements nested states.</summary>
         [Serializable]
-        [DocumentationSorting(13.2f, DocumentationSortingAttribute.Level.Undoc)]
+        [DocumentationSorting(DocumentationSortingAttribute.Level.Undoc)]
         public struct ParentHash
         {
             /// <summary>Internal API for the Inspector editor</summary>
@@ -167,14 +167,15 @@ namespace Cinemachine
                 vcam.RemovePostPipelineStageHook(d);
         }
 
-        /// <summary>Called by CinemachineCore at designated update time
+        /// <summary>Internal use only.  Do not call this method.  
+        /// Called by CinemachineCore at designated update time
         /// so the vcam can position itself and track its targets.  This implementation
         /// updates all the children, chooses the best one, and implements any required blending.</summary>
         /// <param name="worldUp">Default world Up, set by the CinemachineBrain</param>
         /// <param name="deltaTime">Delta time for time-based effects (ignore if less than or equal to 0)</param>
-        public override void UpdateCameraState(Vector3 worldUp, float deltaTime)
+        public override void InternalUpdateCameraState(Vector3 worldUp, float deltaTime)
         {
-            //UnityEngine.Profiling.Profiler.BeginSample("CinemachineStateDrivenCamera.UpdateCameraState");
+            //UnityEngine.Profiling.Profiler.BeginSample("CinemachineStateDrivenCamera.InternalUpdateCameraState");
             if (!PreviousStateIsValid)
                 deltaTime = -1;
 
@@ -192,7 +193,7 @@ namespace Cinemachine
                         {
                             vcam.gameObject.SetActive(enableChild);
                             if (enableChild)
-                                CinemachineCore.Instance.UpdateVirtualCamera(vcam, worldUp, deltaTime);
+                                vcam.UpdateCameraState(worldUp, deltaTime);
                         }
                     }
                 }
@@ -349,7 +350,8 @@ namespace Cinemachine
             CinemachineVirtualCameraBase defaultCam = m_ChildCameras[0];
             if (m_AnimatedTarget == null || !m_AnimatedTarget.gameObject.activeSelf 
                 || m_AnimatedTarget.runtimeAnimatorController == null
-                || m_LayerIndex < 0 || m_LayerIndex >= m_AnimatedTarget.layerCount)
+                || m_LayerIndex < 0 || !m_AnimatedTarget.hasBoundPlayables
+                || m_LayerIndex >= m_AnimatedTarget.layerCount)
             {
                 mActivationTime = 0;
                 //UnityEngine.Profiling.Profiler.EndSample();
@@ -503,8 +505,14 @@ namespace Cinemachine
             if (camA == null || activeBlend != null)
             {
                 // Blend from the current camera position
-                CameraState state = (activeBlend != null) ? activeBlend.State : State;
-                camA = new StaticPointVirtualCamera(state, (activeBlend != null) ? "Mid-blend" : "(none)");
+                CameraState state = State;
+                if (activeBlend == null)
+                    camA = new StaticPointVirtualCamera(state, "(none)");
+                else
+                {
+                    state = activeBlend.State;
+                    camA = new BlendSourceVirtualCamera(activeBlend, deltaTime);
+                }
             }
             return new CinemachineBlend(camA, camB, blendCurve,duration,  0);
         }

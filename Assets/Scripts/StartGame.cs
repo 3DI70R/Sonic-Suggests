@@ -1,19 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.UI;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class StartGame : MonoBehaviour
 {
 	public PlayableDirector Director;
+	public Text startText;
 	private bool played;
 
+	private void Start()
+	{
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+	}
+	
 	public void Update()
 	{
-		if (!played && Input.GetButton("Submit"))
+		if (!played && CrossPlatformInputManager.GetButton("Submit"))
 		{
-			Director.Play();
-			played = true;
+			Play();
 		}
+	}
+
+	public void OnStartClicked()
+	{
+		Play();
+	}
+
+	public void Play()
+	{
+		
+		Director.Play();
+		played = true;
 	}
 }

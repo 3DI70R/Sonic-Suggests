@@ -3,6 +3,20 @@ using UnityEngine;
 namespace Cinemachine
 {
     /// <summary>
+    /// Property applied to AxisState.  Used for custom drawing in the inspector.
+    /// </summary>
+    public sealed class AxisStatePropertyAttribute : PropertyAttribute
+    {
+    }
+
+    /// <summary>
+    /// Property applied to OrbitalTransposer.Heading.  Used for custom drawing in the inspector.
+    /// </summary>
+    public sealed class OrbitalTransposerHeadingPropertyAttribute : PropertyAttribute
+    {
+    }
+
+    /// <summary>
     /// Property applied to LensSettings.  Used for custom drawing in the inspector.
     /// </summary>
     public sealed class LensSettingsPropertyAttribute : PropertyAttribute
@@ -42,7 +56,7 @@ namespace Cinemachine
     /// <summary>
     /// Atrtribute to control the automatic generation of documentation.
     /// </summary>
-    [DocumentationSorting(0f, DocumentationSortingAttribute.Level.Undoc)]
+    [DocumentationSorting(DocumentationSortingAttribute.Level.Undoc)]
     public sealed class DocumentationSortingAttribute : System.Attribute
     {
         /// <summary>Refinement level of the documentation</summary>
@@ -55,15 +69,12 @@ namespace Cinemachine
             /// <summary>Type is documented in the highly-refined User Manual</summary>
             UserRef 
         };
-        /// <summary>Where this type appears in the manual.  Smaller number sort earlier.</summary>
-        public float SortOrder { get; private set; }
         /// <summary>Refinement level of the documentation.  The more refined, the more is excluded.</summary>
         public Level Category { get; private set; }
 
         /// <summary>Contructor with specific values</summary>
-        public DocumentationSortingAttribute(float sortOrder, Level category)
+        public DocumentationSortingAttribute(Level category)
         {
-            SortOrder = sortOrder;
             Category = category;
         }
     }
