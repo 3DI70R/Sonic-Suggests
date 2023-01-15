@@ -236,6 +236,7 @@ GameObject:
   - component: {fileID: 114878012771033658}
   - component: {fileID: 114884965137384188}
   - component: {fileID: 82992302304495386}
+  - component: {fileID: 114366976116196658}
   m_Layer: 0
   m_Name: Tails
   m_TagString: Untagged
@@ -666,7 +667,7 @@ Transform:
   m_GameObject: {fileID: 1862825262992400}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4756200919646880}
   - {fileID: 4609434691625484}
@@ -943,14 +944,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1318082540433652}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4875183, y: -0.956, z: -23.066}
+  m_LocalRotation: {x: -0, y: -0.79335344, z: -0, w: 0.60876137}
+  m_LocalPosition: {x: 83.32, y: 30.08, z: 5.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4217903511970852}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -105.00001, z: 0}
 --- !u!4 &4885759278778594
 Transform:
   m_ObjectHideFlags: 1
@@ -1174,6 +1175,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114366976116196658
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1318082540433652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e85376a2dc3d454eb3f383ea3fa4aeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  character: {fileID: 114884965137384188}
 --- !u!114 &114507368152546274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1204,6 +1218,7 @@ MonoBehaviour:
   character: {fileID: 114507368152546274}
   animator: {fileID: 95960786172921262}
   rotationObject: {fileID: 1862825262992400}
+  hurt: 0
 --- !u!114 &114884965137384188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1219,6 +1234,10 @@ MonoBehaviour:
   animator: {fileID: 114878012771033658}
   jumpVelocity: 5
   audioSource: {fileID: 82992302304495386}
+  ringCount: 15
+  characterRenderer: {fileID: 137370199733487236}
+  droppedRingPrefab: {fileID: 1808397636284584, guid: 092f5faae54ab4578aad418ed17fb121,
+    type: 2}
   jumpSound: {fileID: 8300000, guid: 731e22b9d2faf4f6f9b083fd57115c41, type: 3}
 --- !u!136 &136922331810639596
 CapsuleCollider:
@@ -1229,7 +1248,7 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 43659ed002adad6408e75459efdca374, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.2
+  m_Radius: 0.3
   m_Height: 0.8337
   m_Direction: 1
   m_Center: {x: 0, y: 0.4, z: 0}

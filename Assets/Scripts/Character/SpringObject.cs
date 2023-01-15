@@ -7,6 +7,11 @@ public class SpringObject : MonoBehaviour {
     public AudioSource source;
 
     public void OnTriggerEnter(Collider c) {
+
+        if(c.isTrigger) {
+            return;
+        }
+
         var springActivator = c.gameObject.GetComponent<ISpringActivator>();
 
         if(springActivator != null) {

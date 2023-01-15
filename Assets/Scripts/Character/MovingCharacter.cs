@@ -25,6 +25,10 @@ public class MovingCharacter : MonoBehaviour
 
     public float Tilt { get { return tilt; } }
 
+    private void Update() {
+        direction = transform.forward;
+    }
+
     private void FixedUpdate()
     {
         FindGround();

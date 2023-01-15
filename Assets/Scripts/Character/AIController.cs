@@ -8,6 +8,11 @@ public class AIController : MonoBehaviour {
 
     private void Update() {
 
+        if(!target) {
+            character.SetDirection(Vector2.zero);
+            return;
+        }
+
         if(target.transform.position.y > transform.position.y + 1) {
             character.Jump();
         }

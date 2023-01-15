@@ -1,23 +1,40 @@
+using UnityEditor;
 using UnityEngine;
 
-public class PlayerCharacter : MonoBehaviour, ISpringActivator {
+public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable, IPickUpCollector {
 
-    private Collider[] colliders = new Collider[8];
+    private Collider[] colliders = new Collider[32];
 
     public MovingCharacter character;
     public CharacterAnimator animator;
     public float jumpVelocity;
     public AudioSource audioSource;
+    public int ringCount;
+    public Renderer characterRenderer;
+    public GameObject droppedRingPrefab;
 
     public AudioClip jumpSound;
 
     private bool isJumping;
     private bool jump;
     private Vector2 direction;
+    private float invisibilityTime;
 
     private void Update() {
         UpdateMovement();
         CheckForHittable();
+        UpdateInvisibilityAnim();
+    }
+
+    private void UpdateInvisibilityAnim() {
+        invisibilityTime -= Time.deltaTime;
+        if(IsInvincible) {
+            animator.hurt = true;
+            characterRenderer.enabled = Mathf.PingPong(Time.time * 30, 1) > 0.25;
+        } else {
+            animator.hurt = false;
+            characterRenderer.enabled = true;
+        }
     }
 
     private void CheckForHittable() {
@@ -30,6 +47,11 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator {
 
             for(int i = 0; i < count; i++) {
                 var c = colliders[i];
+
+                if(c.isTrigger) {
+                    continue;
+                }
+
                 IHittable hittable = c.gameObject.GetComponent<IHittable>();
 
                 if(hittable != null) {
@@ -74,8 +96,44 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator {
         jump = true;
     }
 
+    public bool IsInvincible { get { return invisibilityTime >= 0; }}
+
     public void OnSpringActivated(SpringObject spring) {
         var vector = spring.transform.up * spring.springForce;
         character.characterRigidbody.velocity = vector;
+    }
+
+    public void OnPlayerHit(UnityEngine.GameObject enemy, bool ignoreProtection) {
+        if(invisibilityTime <= 0) {
+            if(ringCount >= 0) {
+
+                var dropCount = Mathf.Min(32, ringCount);
+
+                for(int i = 0; i < dropCount; i++) {
+                    var obj = Instantiate(droppedRingPrefab);
+                    var body = obj.GetComponent<Rigidbody>();
+                    var rotation = Quaternion.Euler(0, ((float) i / (float) dropCount) * 360, 0);
+
+                    obj.transform.position = transform.position
+                    + new Vector3(0, 0.5f, 0)
+                    + rotation * Vector3.forward;
+
+                    body.velocity = rotation * new Vector3(0f, 5f, 2f);
+                    body.rotation = rotation;
+                }
+
+                invisibilityTime = 5f;
+                ringCount = 0;
+            } else {
+                // dead
+            }
+
+        }
+    }
+
+    public void OnPickUpCollected(UnityEngine.GameObject pickUpObject) {
+        if(pickUpObject.GetComponent<Ring>()) {
+            ringCount++;
+        }
     }
 }
