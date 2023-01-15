@@ -9,6 +9,7 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
     public float jumpVelocity;
     public AudioSource audioSource;
     public int ringCount;
+    public int lifeCount = 3;
     public Renderer characterRenderer;
     public GameObject droppedRingPrefab;
     public GameObject respawnPoint;
@@ -43,6 +44,7 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
                 transform.position = respawnPoint.transform.position;
                 character.characterRigidbody.velocity = Vector3.zero;
                 animator.Normal();
+                invisibilityTime = 3f;
             }
         }
     }
@@ -173,5 +175,6 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
         isKilled = true;
         respawnTime = 3f;
         animator.Kill();
+        lifeCount--;
     }
 }

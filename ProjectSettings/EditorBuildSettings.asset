@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Resources/Scenes/GreenHillZone/GreenHillZone.unity
     guid: 551d699b10374114a9699f8f0e556cd3
+  - enabled: 1
+    path: Assets/Resources/Scenes/OutroCutscene/OutroCutscene.unity
+    guid: 632d814625285bd4a98a9380308a9995
