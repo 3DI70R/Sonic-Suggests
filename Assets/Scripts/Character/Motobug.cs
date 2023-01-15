@@ -8,7 +8,10 @@ public class Motobug : MonoBehaviour, ISpringActivator {
 	}
 
 	public MovingCharacter character;
+    public CharacterAnimator charAnimator;
     private GameObject target;
+    private bool isAttacking;
+    private float attackTimeout;
 
 	void Update () {
         if(target != null) {
@@ -17,6 +20,9 @@ public class Motobug : MonoBehaviour, ISpringActivator {
         } else {
             character.SetVelocity(Vector2.zero);
         }
+	    
+	    charAnimator.animator.SetBool("Attack", attackTimeout > 0);
+	    attackTimeout -= Time.deltaTime;
 	}
 
     private void OnCollisionStay(Collision c) {
@@ -24,6 +30,7 @@ public class Motobug : MonoBehaviour, ISpringActivator {
 
         if(player != null) {
             player.OnPlayerHit(gameObject, false);
+            attackTimeout = 0.25f;
         }
     }
 

@@ -2121,12 +2121,15 @@ MonoBehaviour:
   jumpVelocity: 5
   audioSource: {fileID: 82872173551864644}
   ringCount: 15
+  lifeCount: 3
   characterRenderer: {fileID: 137297483908968564}
   droppedRingPrefab: {fileID: 1808397636284584, guid: 092f5faae54ab4578aad418ed17fb121,
     type: 2}
   respawnPoint: {fileID: 0}
   jumpSound: {fileID: 8300000, guid: 731e22b9d2faf4f6f9b083fd57115c41, type: 3}
   ringLossSound: {fileID: 8300000, guid: 98cd9577daf70e248a89d945db6afbfc, type: 3}
+  deathSound: {fileID: 0}
+  drownSound: {fileID: 0}
 --- !u!114 &114092156311512628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2182,9 +2185,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
-  m_Height: 0.8337
+  m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0.4, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!137 &137297483908968564
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

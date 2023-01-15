@@ -13,6 +13,7 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
     public Renderer characterRenderer;
     public GameObject droppedRingPrefab;
     public GameObject respawnPoint;
+    public GameObject meshObject;
 
     public AudioClip jumpSound;
     public AudioClip ringLossSound;
@@ -25,6 +26,7 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
     private float invisibilityTime;
     private bool isKilled;
     private float respawnTime;
+    private bool silentRespawn;
 
     private void Update() {
         CheckForRespawn();
@@ -44,20 +46,36 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
                 transform.position = respawnPoint.transform.position;
                 character.characterRigidbody.velocity = Vector3.zero;
                 animator.Normal();
-                invisibilityTime = 3f;
+                silentRespawn = false;
+
+                ringCount = 0;
+                lifeCount--;
+                
+                characterRenderer.enabled = true;
+                
+                invisibilityTime = 2f;
             }
         }
     }
 
     private void UpdateInvisibilityAnim() {
         invisibilityTime -= Time.deltaTime;
+
         if(IsInvincible) {
             animator.hurt = true;
             characterRenderer.enabled = Mathf.PingPong(Time.time * 30, 1) > 0.25;
         } else {
             animator.hurt = false;
-            characterRenderer.enabled = true;
+            characterRenderer.enabled = !silentRespawn;
         }
+    }
+
+    public void SilentRespawn(float time)
+    {
+        silentRespawn = true;
+        isKilled = true;
+        respawnTime = time;
+        characterRenderer.enabled = true;
     }
 
     private void CheckForHittable() {
@@ -175,6 +193,5 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
         isKilled = true;
         respawnTime = 3f;
         animator.Kill();
-        lifeCount--;
     }
 }

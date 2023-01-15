@@ -7,32 +7,33 @@ public class PlaySound : TriggerAction
 	public AudioClip clip;
 	public AudioSource source;
 	public bool oneTime = true;
-
 	private bool used;
+	public float delay;
 	
 	private void OnTriggerEnter(Collider collider) {
-
-		if (oneTime && used)
-		{
-			return;
-		}
-		
 		if(collider.GetComponent<PlayerController>()) {
-			source.PlayOneShot(clip);
-			used = true;
+			StartCoroutine(Play());
 		}
 	}
 
 	public override void OnAction()
 	{
 		base.OnAction();
-		
-		if (oneTime && used)
+
+		StartCoroutine(Play());
+	}
+
+	private IEnumerator Play()
+	{
+		if (!oneTime || !used)
 		{
-			return;
+			if (delay != 0)
+			{
+				yield return new WaitForSeconds(delay);
+			}
+			
+			source.PlayOneShot(clip);
+			used = true;
 		}
-		
-		source.PlayOneShot(clip);
-		used = true;
 	}
 }

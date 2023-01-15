@@ -7,6 +7,7 @@ public class SetTargetTrigger : TriggerAction {
     public AIController controller;
     public GameObject target;
     public bool oneTime = true;
+    public float delay;
 
     private bool used;
 
@@ -17,11 +18,16 @@ public class SetTargetTrigger : TriggerAction {
             return;
         }
         
-        if(collider.GetComponent<PlayerController>()) {
-            controller.target = target;
+        if(collider.GetComponent<PlayerController>())
+        {
+            StartCoroutine(ApplyTarget());
             used = true;
         }
     }
-    
-    
+
+    private IEnumerator ApplyTarget()
+    {
+        yield return new WaitForSeconds(delay);
+        controller.target = target;
+    }
 }

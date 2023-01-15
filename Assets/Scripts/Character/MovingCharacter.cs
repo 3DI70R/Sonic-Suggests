@@ -14,6 +14,7 @@ public class MovingCharacter : MonoBehaviour
     private Rigidbody groundBody;
     private Vector3 direction;
     private float tilt;
+    private int layerMask;
     
     public bool OnGround { get { return onGround; } }
     
@@ -27,6 +28,7 @@ public class MovingCharacter : MonoBehaviour
 
     private void Awake() {
         direction = transform.forward;
+        layerMask = LayerMask.GetMask("Default");
     }
 
     private void FixedUpdate()
@@ -87,7 +89,8 @@ public class MovingCharacter : MonoBehaviour
         var center = characterCapsule.transform.TransformPoint(characterCapsule.center);
         RaycastHit hitInfo;
 
-        if (Physics.SphereCast(center, characterCapsule.radius, Vector3.down, out hitInfo, characterCapsule.height / 2))
+        if (Physics.SphereCast(center, characterCapsule.radius, Vector3.down, out hitInfo, 
+            characterCapsule.height / 2, layerMask))
         {
             Debug.DrawLine(center, hitInfo.point);
 

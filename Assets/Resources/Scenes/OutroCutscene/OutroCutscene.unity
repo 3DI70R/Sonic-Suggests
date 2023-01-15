@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: -1.3604659, y: 0.5918385, z: 1.9938488}
+  m_FollowOffset: {x: 0.4315292, y: 0.8278385, z: -1.948083}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -195,14 +195,14 @@ MonoBehaviour:
   m_LookaheadSmoothing: 10
   m_HorizontalDamping: 0.5
   m_VerticalDamping: 0.5
-  m_ScreenX: 0.5
-  m_ScreenY: 0.5
-  m_DeadZoneWidth: 0.1
-  m_DeadZoneHeight: 0.1
-  m_SoftZoneWidth: 0.8
-  m_SoftZoneHeight: 0.8
+  m_ScreenX: 0.5205644
+  m_ScreenY: 0.5156565
+  m_DeadZoneWidth: 0
+  m_DeadZoneHeight: 0
+  m_SoftZoneWidth: 0.1266129
+  m_SoftZoneHeight: 0.3303031
   m_BiasX: 0
-  m_BiasY: 0
+  m_BiasY: -0.0000001294048
 --- !u!114 &52834589
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -389,7 +389,7 @@ PlayableDirector:
   - key: {fileID: 0}
     value: {fileID: 0}
   - key: {fileID: 114835094749352624, guid: 0673f5643faf4844282bc24ff40d6f1d, type: 2}
-    value: {fileID: 1233073186}
+    value: {fileID: 1082055014}
   m_ExposedReferences:
     m_References:
     - 56d47dd3578e04d2fb59e59fc34dfe81: {fileID: 0}
@@ -842,7 +842,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &476303840
 Transform:
   m_ObjectHideFlags: 0
@@ -1110,7 +1110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: -1.3604659, y: 0.5918385, z: 1.9938488}
+  m_FollowOffset: {x: -7.685465, y: -0.3390001, z: -38.51314}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1196,7 +1196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &728251229
 Transform:
   m_ObjectHideFlags: 0
@@ -1371,19 +1371,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400070, guid: 8f03e9e801e7c59479f9cabba3f07fcf, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.1493594
+      value: 0.14935942
       objectReference: {fileID: 0}
     - target: {fileID: 400070, guid: 8f03e9e801e7c59479f9cabba3f07fcf, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.04152958
+      value: -0.041529585
       objectReference: {fileID: 0}
     - target: {fileID: 400070, guid: 8f03e9e801e7c59479f9cabba3f07fcf, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.27684355
+      value: 0.27684358
       objectReference: {fileID: 0}
     - target: {fileID: 400070, guid: 8f03e9e801e7c59479f9cabba3f07fcf, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9483273
+      value: 0.94832736
       objectReference: {fileID: 0}
     - target: {fileID: 400070, guid: 8f03e9e801e7c59479f9cabba3f07fcf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2063,15 +2063,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400010, guid: 8f03e9e801e7c59479f9cabba3f07fcf, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.19826879
+      value: 0.19826877
       objectReference: {fileID: 0}
     - target: {fileID: 400010, guid: 8f03e9e801e7c59479f9cabba3f07fcf, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.23141843
+      value: -0.23141842
       objectReference: {fileID: 0}
     - target: {fileID: 400010, guid: 8f03e9e801e7c59479f9cabba3f07fcf, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7955527
+      value: 0.7955526
       objectReference: {fileID: 0}
     - target: {fileID: 400010, guid: 8f03e9e801e7c59479f9cabba3f07fcf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3076,6 +3076,7 @@ GameObject:
   - component: {fileID: 1059362235}
   - component: {fileID: 1059362237}
   - component: {fileID: 1059362236}
+  - component: {fileID: 1059362238}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -3144,6 +3145,35 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1059362234}
+--- !u!114 &1059362238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1059362234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d276f7ca2769994aaed41b95660edfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToUpdate: {fileID: 1059362236}
+  lines:
+  - Thanks\nfor\nplaying
+  - Thanks for\nplaying...\nAgain?
+  - Playing for\nthird time\neh?
+  - Well\neither you love this game\nor just capturing video\nfor your channel
+  - Oh, yes\nfifth completion\ni had no doubt in you
+  - Still playing?
+  - Ok, one more time\nand i show you a little joke
+  - IM\nNOT\nWEAK
+  - Ha!\nGot it?
+  - Think about it\nyou probably wasted more than an hour\nplaying this game
+  - You are probably\nknow this game more than me
+  - Stop!\nGet some help!
+  - Sigh...\nThis is\nyour 13'th playthrough
+  - I hope you're\nnot questioning your\nlife choices right now
+  - Well, sorry for disappointment\nbut this is last line\nYou rock and best fan ever,
+    but\nits 2 AM, i want to sleep
 --- !u!1 &1068999529 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: 13dd5cc2e29a64435b36bfe9e012ff60, type: 3}
@@ -3285,7 +3315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97610a11615897745b7048b3bcc986d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: GreenHillZone
+  sceneName: IntroCutscene
 --- !u!4 &1082055016
 Transform:
   m_ObjectHideFlags: 0
@@ -3480,7 +3510,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1202222122
 Animator:
   serializedVersion: 3
@@ -3762,7 +3792,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5aefe2f14ecbab54fb88c8f7b7ac7137, type: 2}
+  - {fileID: 2100000, guid: 6c878267078bead468cdbe080b8fcb60, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -3861,7 +3891,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1826255148
+  randomSeed: 262344782
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -11343,7 +11373,7 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: 3
+  m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
@@ -11360,8 +11390,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1717029497}
-  m_LocalRotation: {x: -0, y: 0.9930712, z: -0, w: 0.11751459}
-  m_LocalPosition: {x: -1.072, y: -1.61, z: 37.804}
+  m_LocalRotation: {x: 0.0021028058, y: -0.99633646, z: -0.025673425, w: -0.08154881}
+  m_LocalPosition: {x: -0.80999994, y: 2.7599998, z: 39.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 74397385}
@@ -14956,10 +14986,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: -1.0174658, y: 5.0098386, z: 4.9658527}
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_FollowOffset: {x: 1.93103, y: 0.5718385, z: 1.358944}
+  m_XDamping: 0.15
+  m_YDamping: 0.15
+  m_ZDamping: 0.15
   m_PitchDamping: 0
   m_YawDamping: 0
   m_RollDamping: 0
@@ -14977,13 +15007,13 @@ MonoBehaviour:
   m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 10
-  m_HorizontalDamping: 0.5
-  m_VerticalDamping: 0.5
-  m_ScreenX: 0.5
-  m_ScreenY: 0.5
-  m_DeadZoneWidth: 0.1
-  m_DeadZoneHeight: 0.1
-  m_SoftZoneWidth: 0.8
+  m_HorizontalDamping: 1.6
+  m_VerticalDamping: 1.2
+  m_ScreenX: 0.5091398
+  m_ScreenY: 0.469543
+  m_DeadZoneWidth: 0.02016128
+  m_DeadZoneHeight: 0.04923857
+  m_SoftZoneWidth: 0.2233871
   m_SoftZoneHeight: 0.8
   m_BiasX: 0
   m_BiasY: 0

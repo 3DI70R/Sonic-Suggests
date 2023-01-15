@@ -1,6 +1,8 @@
+using System;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.Playables;
+using Random = UnityEngine.Random;
 
 public class EggMobile : MonoBehaviour, IHittable {
 
@@ -12,6 +14,7 @@ public class EggMobile : MonoBehaviour, IHittable {
 
     public GameObject[] waypoints;
     public GameObject eggmanModel;
+    public GameObject eggmanModelHead;
     public LineRenderer lineRenderer;
     public WaypointAlogithm waypointAlogithm;
     public AudioSource source;
@@ -29,11 +32,33 @@ public class EggMobile : MonoBehaviour, IHittable {
     public GameObject ballObject;
     private float lastHitTime;
     private bool dead;
+    private Quaternion headRotation;
+    private Vector3 headScale;
+    private float[] audioBuffer = new float[128];
 
     private int currentWaypointIndex;
 
     private void Update() {
         if(activated) {
+
+            if (source.isPlaying)
+            {
+                source.GetOutputData(audioBuffer, 0);
+                var max = Mathf.Max(audioBuffer);
+                headRotation = Quaternion.Euler(-max * 90, Random.Range(-max, max) * 50, 0);
+                headScale = new Vector3(1 + max / 2, 1, 1);
+            }
+            else
+            {
+                headRotation = Quaternion.identity;
+                headScale = Vector3.one;
+            }
+
+            eggmanModelHead.transform.localScale =
+                Vector3.Lerp(eggmanModel.transform.localScale, headScale, Time.deltaTime * 25);
+            eggmanModelHead.transform.localRotation = Quaternion.Lerp(eggmanModelHead.transform.localRotation,
+                headRotation, Time.deltaTime * 25);
+            
             eggmanModel.SetActive(true);
             var currentWaypoint = waypoints[currentWaypointIndex];
 
@@ -103,7 +128,7 @@ public class EggMobile : MonoBehaviour, IHittable {
     private void OnTriggerEnter(Collider collider) {
         if(collider.gameObject.CompareTag("Eggman")) {
             activated = true;
-            Destroy(collider.gameObject);
+            collider.gameObject.SetActive(false);
             source.PlayOneShot(awakeSound);
             bossBattleCamera.Priority = 100;
         } 
@@ -111,24 +136,31 @@ public class EggMobile : MonoBehaviour, IHittable {
         {
             var player = collider.GetComponent<PlayerCharacter>();
             
-            if(Time.time > lastHitTime + 0.5) {
+            if(Time.time > lastHitTime + 0.5) 
+            {
                 health--;
                 speed *= 1.1f;
                 waypointAlogithm = (WaypointAlogithm) Random.Range(0, 3);
                 lastHitTime = Time.time;
-            
-                source.PlayOneShot(hitSound);
 
-                if (health == 0)
+                if (activated && !dead)
                 {
-                    source.PlayOneShot(deadSound);
-                    OnDead();
+                    if (health == 0)
+                    {
+                        source.PlayOneShot(deadSound);
+                        OnDead();
+                    }
+                    else
+                    {
+                        if (!source.isPlaying)
+                        {
+                            source.clip = swearSound[Random.Range(0, swearSound.Length)];
+                            source.Play();
+                        }
+                    }
                 }
-                else
-                {
-                    source.PlayOneShot(swearSound[Random.Range(0, swearSound.Length)]);
-                }
-            
+                
+                source.PlayOneShot(hitSound);
             }
 
             player.character.characterRigidbody.velocity = (player.transform.position - (transform.position + Vector3.up)).normalized * 10;

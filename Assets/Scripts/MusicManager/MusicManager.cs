@@ -247,8 +247,10 @@ public class MusicManager : MonoBehaviour
             source.clip = settings.clip;
             source.volume = 0.0f;
             source.pitch = 1.0f;
+            source.spatialBlend = 0.0f;
             source.bypassEffects = true;
             source.bypassListenerEffects = true;
+            source.ignoreListenerPause = true;
             source.loop = settings.isLooping;
             
             playbackLayers = new List<MusicParams>
