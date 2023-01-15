@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PlayerPickUp : MonoBehaviour {
 
-    public GameObject destroyedObject;
+    public GameObject collectedEffect;
+    public GameObject collectedEffectCenter;
     public float collectDelay;
     public float lifeTime;
 
@@ -27,8 +28,10 @@ public class PlayerPickUp : MonoBehaviour {
         if(collector != null) {
             collector.OnPickUpCollected(gameObject);
 
-            if(destroyedObject) {
-                Instantiate(destroyedObject, transform.position, transform.rotation);
+            if(collectedEffect) {
+                Instantiate(collectedEffect, 
+                    collectedEffectCenter.transform.position, 
+                    collectedEffectCenter.transform.rotation);
             }
 
             Destroy(gameObject);

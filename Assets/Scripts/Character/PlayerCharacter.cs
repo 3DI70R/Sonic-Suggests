@@ -1,7 +1,6 @@
-using UnityEditor;
 using UnityEngine;
 
-public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable, IPickUpCollector {
+public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable, IPickUpCollector, IDrownable {
 
     private Collider[] colliders = new Collider[32];
 
@@ -12,8 +11,10 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
     public int ringCount;
     public Renderer characterRenderer;
     public GameObject droppedRingPrefab;
+    public GameObject respawnPoint;
 
     public AudioClip jumpSound;
+    public AudioClip ringLossSound;
 
     private bool isJumping;
     private bool jump;
@@ -103,16 +104,13 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
         character.characterRigidbody.velocity = vector;
     }
 
-    public void OnPlayerHit(UnityEngine.GameObject enemy, bool ignoreProtection) {
+    public void OnPlayerHit(GameObject enemy, bool ignoreProtection) {
         if(invisibilityTime <= 0) {
             if(ringCount >= 0) {
-
-                var dropCount = Mathf.Min(32, ringCount);
-
-                for(int i = 0; i < dropCount; i++) {
+                for(int i = 0; i < ringCount; i++) {
                     var obj = Instantiate(droppedRingPrefab);
                     var body = obj.GetComponent<Rigidbody>();
-                    var rotation = Quaternion.Euler(0, ((float) i / (float) dropCount) * 360, 0);
+                    var rotation = Quaternion.Euler(0, i / (float) ringCount * 360, 0);
 
                     obj.transform.position = transform.position
                     + new Vector3(0, 0.5f, 0)
@@ -122,18 +120,28 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
                     body.rotation = rotation;
                 }
 
+                audioSource.PlayOneShot(ringLossSound);
                 invisibilityTime = 5f;
                 ringCount = 0;
             } else {
                 // dead
             }
-
         }
     }
 
-    public void OnPickUpCollected(UnityEngine.GameObject pickUpObject) {
+    public void OnPickUpCollected(GameObject pickUpObject) {
         if(pickUpObject.GetComponent<Ring>()) {
             ringCount++;
         }
+    }
+
+    public void OnDrown()
+    {
+        Kill();
+    }
+
+    private void Kill()
+    {
+        
     }
 }

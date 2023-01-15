@@ -142,7 +142,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 169631f61097c423faec8d71e2aabced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyedObject: {fileID: 0}
+  collectedEffect: {fileID: 1417028961477394, guid: 72aab23f2c360924eb74c5fb300e562a,
+    type: 2}
+  collectedEffectCenter: {fileID: 1742512592076588}
   collectDelay: 0
   lifeTime: 0
 --- !u!135 &135050019277625822

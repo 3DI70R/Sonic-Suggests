@@ -13,7 +13,7 @@ public class AIController : MonoBehaviour {
             return;
         }
 
-        if(target.transform.position.y > transform.position.y + 1) {
+        if(target.transform.position.y > transform.position.y + 3) {
             character.Jump();
         }
 

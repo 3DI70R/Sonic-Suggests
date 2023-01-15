@@ -2131,7 +2131,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -2205,6 +2205,7 @@ MonoBehaviour:
   animator: {fileID: 95519538397360790}
   rotationObject: {fileID: 1930597068877986}
   hurt: 0
+  onlyVelocity: 0
 --- !u!114 &114866323873965246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2225,6 +2226,7 @@ MonoBehaviour:
   droppedRingPrefab: {fileID: 1808397636284584, guid: 092f5faae54ab4578aad418ed17fb121,
     type: 2}
   jumpSound: {fileID: 8300000, guid: 731e22b9d2faf4f6f9b083fd57115c41, type: 3}
+  ringLossSound: {fileID: 8300000, guid: 98cd9577daf70e248a89d945db6afbfc, type: 3}
 --- !u!136 &136981568210905400
 CapsuleCollider:
   m_ObjectHideFlags: 1

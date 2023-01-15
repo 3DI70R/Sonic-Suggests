@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4708639206345236}
   - component: {fileID: 65591438099301598}
-  - component: {fileID: 114930560447480954}
+  - component: {fileID: 114181635465007770}
   m_Layer: 0
   m_Name: RingMonitor
   m_TagString: Untagged
@@ -370,7 +370,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.79471123, y: 1, z: 0.5317124}
   m_Center: {x: 0.008775829, y: 0.4718609, z: -0.044948686}
---- !u!114 &114930560447480954
+--- !u!114 &114181635465007770
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -378,7 +378,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1552227784353678}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8df60f72d92774daeb697925e89a34c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ba0f06b2c784a8ba2e3eba583aa66d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyedPrefab: {fileID: 0}
+  destroyedPrefab: {fileID: 1449984594522660, guid: 3f39257b0711a34479403523e37cd8c2,
+    type: 2}

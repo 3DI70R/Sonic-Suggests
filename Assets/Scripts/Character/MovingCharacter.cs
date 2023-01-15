@@ -25,7 +25,7 @@ public class MovingCharacter : MonoBehaviour
 
     public float Tilt { get { return tilt; } }
 
-    private void Update() {
+    private void Awake() {
         direction = transform.forward;
     }
 

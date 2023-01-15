@@ -9,15 +9,21 @@ public class CharacterAnimator : MonoBehaviour
     public GameObject rotationObject;
     public bool hurt;
 
+    public bool onlyVelocity = true;
+
     public void Update()
     {
         var velocity = character.characterRigidbody.velocity;
-        
-        animator.SetFloat("XZ Velocity", new Vector3(velocity.x, 0, velocity.z).magnitude);
-        animator.SetFloat("Y Velocity", velocity.y);
-        animator.SetBool("On Ground", character.OnGround);
-        animator.SetBool("Hurt", hurt);
 
+        animator.SetFloat("XZ Velocity", new Vector3(velocity.x, 0, velocity.z).magnitude);
+
+        if (!onlyVelocity)
+        {
+            animator.SetFloat("Y Velocity", velocity.y);
+            animator.SetBool("On Ground", character.OnGround);
+            animator.SetBool("Hurt", hurt);
+        }
+        
         rotationObject.transform.rotation = Quaternion.Lerp(rotationObject.transform.rotation,
             Quaternion.LookRotation(character.Direction) * Quaternion.Euler(0, 0, -character.Tilt * 35),
                 Time.deltaTime * 25f);

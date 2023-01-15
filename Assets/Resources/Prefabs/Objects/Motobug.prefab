@@ -236,7 +236,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8df60f72d92774daeb697925e89a34c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyedPrefab: {fileID: 0}
+  destroyedPrefab: {fileID: 1449984594522660, guid: 3f39257b0711a34479403523e37cd8c2,
+    type: 2}
 --- !u!114 &114381814884735914
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -267,6 +268,8 @@ MonoBehaviour:
   character: {fileID: 114381814884735914}
   animator: {fileID: 95579082152980314}
   rotationObject: {fileID: 1465470470628928}
+  hurt: 0
+  onlyVelocity: 1
 --- !u!114 &114706514971603262
 MonoBehaviour:
   m_ObjectHideFlags: 1

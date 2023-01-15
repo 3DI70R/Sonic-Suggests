@@ -126,9 +126,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 169631f61097c423faec8d71e2aabced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyedObject: {fileID: 0}
+  collectedEffect: {fileID: 1417028961477394, guid: 72aab23f2c360924eb74c5fb300e562a,
+    type: 2}
+  collectedEffectCenter: {fileID: 1808397636284584}
   collectDelay: 1
-  lifeTime: 15
+  lifeTime: 60
 --- !u!135 &135639615755937000
 SphereCollider:
   m_ObjectHideFlags: 1
