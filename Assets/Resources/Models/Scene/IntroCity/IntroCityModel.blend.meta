@@ -11,6 +11,10 @@ ModelImporter:
     2100002: Wall__TexturesCom_FloorStreets0098_1_seamless_S_jpg
     2100004: Wall__TexturesCom_BuildingsVenice0003_M_jpg
     2100006: Wall__TexturesCom_RooftilesMetal0018_1_seamless_S_jpg
+    2100008: Pavement__TexturesCom_FloorsPortuguese0079_S_jpg_001
+    2100010: Wall__TexturesCom_FloorStreets0098_1_seamless_S_jpg_001
+    2100012: Wall__TexturesCom_BuildingsVenice0004_1_M_jpg
+    2100014: Wall__TexturesCom_RooftilesMetal0018_1_seamless_S_jpg_001
     2300000: //RootNode
     3300000: //RootNode
     4300000: Plane

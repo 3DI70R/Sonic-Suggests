@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Resources/Scenes/IntroCutscene/IntroCutscene.unity
+    guid: 757066e91c092804ab46bd60d71f701c
+  - enabled: 1
+    path: Assets/Resources/Scenes/GreenHillZone/GreenHillZone.unity
+    guid: 551d699b10374114a9699f8f0e556cd3
