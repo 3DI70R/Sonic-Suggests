@@ -17,6 +17,17 @@ public class CharacterAnimator : MonoBehaviour
         animator.SetBool("On Ground", character.OnGround);
         
         rotationObject.transform.rotation = Quaternion.Lerp(rotationObject.transform.rotation,
-            Quaternion.LookRotation(character.Direction), Time.deltaTime * 25f);
+            Quaternion.LookRotation(character.Direction) * Quaternion.Euler(0, 0, -character.Tilt * 35),
+                Time.deltaTime * 25f);
+    }
+
+    public void Normal() {
+        animator.SetTrigger("Normal");
+        animator.SetBool("Jump", false);
+    }
+
+    public void Jump() {
+        animator.SetTrigger("Jump");
+        animator.SetBool("Normal", false);
     }
 }

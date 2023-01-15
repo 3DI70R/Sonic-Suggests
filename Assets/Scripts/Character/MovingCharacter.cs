@@ -13,6 +13,7 @@ public class MovingCharacter : MonoBehaviour
     private Vector3 groundNormal;
     private Rigidbody groundBody;
     private Vector3 direction;
+    private float tilt;
     
     public bool OnGround { get { return onGround; } }
     
@@ -22,11 +23,8 @@ public class MovingCharacter : MonoBehaviour
     
     public Vector3 Direction { get { return direction; } }
 
-    private void Update()
-    {
-        SetVelocity(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * 20);
-    }
-    
+    public float Tilt { get { return tilt; } }
+
     private void FixedUpdate()
     {
         FindGround();
@@ -35,7 +33,9 @@ public class MovingCharacter : MonoBehaviour
     
     public void SetVelocity(Vector2 velocity)
     {
-        targetVelocity = new Vector3(velocity.x, 0, velocity.y);
+        velocity = Vector2.ClampMagnitude(velocity, 1);
+        targetVelocity = Vector3.Lerp(Vector3.zero, new Vector3(velocity.x * maxSpeed, 0, velocity.y * maxSpeed),
+                velocity.magnitude);
     }
 
     private void UpdateVelocity()
@@ -53,7 +53,8 @@ public class MovingCharacter : MonoBehaviour
         {
             direction = charHorizontalVelocity;
         }
-        
+
+        tilt = 0;
         characterRigidbody.velocity = charVelocity;
     }
     private Vector3 ChangeGroundSpeed(Vector3 actualVelocity, Vector3 targetVelocity, 
@@ -79,11 +80,13 @@ public class MovingCharacter : MonoBehaviour
 
     private void FindGround()
     {
-        var center = characterCapsule.transform.InverseTransformPoint(characterCapsule.center);
+        var center = characterCapsule.transform.TransformPoint(characterCapsule.center);
         RaycastHit hitInfo;
 
-        if (Physics.SphereCast(center, characterCapsule.radius, Vector3.down, out hitInfo))
+        if (Physics.SphereCast(center, characterCapsule.radius, Vector3.down, out hitInfo, characterCapsule.height / 2))
         {
+            Debug.DrawLine(center, hitInfo.point);
+
             onGround = true;
             groundNormal = hitInfo.normal;
             groundBody = hitInfo.rigidbody;
