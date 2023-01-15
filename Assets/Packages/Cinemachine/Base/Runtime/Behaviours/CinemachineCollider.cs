@@ -512,7 +512,10 @@ namespace Cinemachine
                 {
                     mCameraColliderGameObject = new GameObject("Cinemachine Collider Collider");
                     mCameraColliderGameObject.hideFlags = HideFlags.HideAndDontSave;
-                    mCameraColliderGameObject.transform.position = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+                    // Cinemachine, wtf, this messes with raycasting in Unity 2018.4.36f
+                    // This causes Physics.Raycast to not detect ground, for some reason
+                    //mCameraColliderGameObject.transform.position = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+                    mCameraColliderGameObject.transform.position = new Vector3(0f, -1000f, 0f);
                     mCameraColliderGameObject.SetActive(true);
                     mCameraCollider = mCameraColliderGameObject.AddComponent<SphereCollider>();
                 }

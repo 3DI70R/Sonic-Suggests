@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.PostProcessing;
+using MinAttribute = UnityEngine.PostProcessing.MinAttribute; // In 2018.4.36f1 this attribute is ambiguous, since it also exists in UnityEngine
 
 namespace UnityEditor.PostProcessing
 {
