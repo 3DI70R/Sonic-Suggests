@@ -5,5 +5,7 @@ public class BonusMonitor : DestroyableObject
     {
         base.OnHit(player);
         player.ringCount += 10;
+        if (player.name == "Player")
+            GameState.Instance.Rings += 10;
     }
 }

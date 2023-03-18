@@ -37,6 +37,14 @@ public class EggMobile : MonoBehaviour, IHittable {
     private float[] audioBuffer = new float[128];
 
     private int currentWaypointIndex;
+    
+    private GameState state;
+
+    private void Start()
+    {
+        state = GameState.Instance;
+        state.BossHealth = health;
+    }
 
     private void Update() {
         if(activated) {
@@ -115,6 +123,7 @@ public class EggMobile : MonoBehaviour, IHittable {
     private void OnDead()
     {
         dead = true;
+        state.CurrentState = State.BossBeaten;
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         endCutsceneDirector.Play();
         
@@ -139,6 +148,7 @@ public class EggMobile : MonoBehaviour, IHittable {
             if(Time.time > lastHitTime + 0.5) 
             {
                 health--;
+                state.BossHealth--;
                 speed *= 1.1f;
                 waypointAlogithm = (WaypointAlogithm) Random.Range(0, 3);
                 lastHitTime = Time.time;
