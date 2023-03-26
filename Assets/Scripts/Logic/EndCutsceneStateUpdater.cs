@@ -10,12 +10,7 @@ public class EndCutsceneStateUpdater : MonoBehaviour
     void Start()
     {
         state = GameState.Instance;
+        state.IsLoading = false;
         state.CurrentState = State.EndCutscene;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        state.FrameCounter++;
     }
 }

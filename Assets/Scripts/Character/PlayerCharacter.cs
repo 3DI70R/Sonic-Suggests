@@ -37,6 +37,8 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
         {
             state = GameState.Instance;
 
+            state.IsLoading = false;
+            
             state.CurrentState = State.InGame;
             
             state.Rings = 0;
@@ -48,9 +50,6 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
 
     private void Update()
     {
-        if (name == "Player")
-            state.FrameCounter++;
-
         CheckForRespawn();
         UpdateMovement();
         CheckForHittable();

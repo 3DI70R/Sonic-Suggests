@@ -21,7 +21,7 @@ public class GameState
 {
     public static GameState Instance = new GameState();
     
-    public unsafe ulong FrameCounter { get { return *_frameCounterPtr; } set { *_frameCounterPtr = value; } }
+    public unsafe bool IsLoading { get { return *_isLoadingPtr; } set { *_isLoadingPtr = value; } }
     
     public unsafe State CurrentState { get { return (State)(*_currentStatePtr); } set { *_currentStatePtr = (int)value; } }
 
@@ -44,12 +44,13 @@ public class GameState
     private const int GameStateEndSignatureLength = 28;
 
     private const int SizeOfInt = 4;
+    private const int SizeOfBoolPadded = SizeOfInt;
     private const int SizeOfLong = 8;
     
     private const int GameStateSize = 88;
 
-    private const int FrameCounterOffset = 32;
-    private const int CurrentStateOffset = FrameCounterOffset + SizeOfLong;
+    private const int IsLoadingOffset = 32;
+    private const int CurrentStateOffset = IsLoadingOffset + SizeOfBoolPadded;
     
     private const int LivesOffset = CurrentStateOffset + SizeOfInt;
     private const int RingsOffset = LivesOffset + SizeOfInt;
@@ -58,7 +59,7 @@ public class GameState
     
     private const int EndSignatureOffset = BossHealthOffset + SizeOfInt;
 
-    private unsafe ulong* _frameCounterPtr;
+    private unsafe bool* _isLoadingPtr;
     private unsafe int* _currentStatePtr;
     
     private unsafe int* _livesPtr;
@@ -75,7 +76,7 @@ public class GameState
         _rawIntPtr = Marshal.AllocHGlobal(GameStateSize);
         _rawPtr = _rawIntPtr.ToPointer();
 
-        _frameCounterPtr = (ulong*)((int)_rawPtr + FrameCounterOffset);
+        _isLoadingPtr = (bool*)((int)_rawPtr + IsLoadingOffset);
         _currentStatePtr = (int*)((int)_rawPtr + CurrentStateOffset);
         
         _livesPtr = (int*)((int)_rawPtr + LivesOffset);

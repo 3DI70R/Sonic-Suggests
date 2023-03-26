@@ -28,7 +28,10 @@ public class ResetSkip : MonoBehaviour
         if (currentPressed != _previousPressed && currentPressed)
         {
             if (panel.activeSelf)
+            {
+                GameState.Instance.IsLoading = true;
                 SceneManager.LoadScene(sceneToLoad);
+            }
             else
             {
                 _confirmationTimer = 180; // 3 seconds

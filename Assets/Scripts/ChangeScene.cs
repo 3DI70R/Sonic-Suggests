@@ -9,6 +9,7 @@ public class ChangeScene : MonoBehaviour
 
 	void Start()
 	{
+		GameState.Instance.IsLoading = true;
 		SceneManager.LoadScene(sceneName);
 	}
 }
