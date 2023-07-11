@@ -20,18 +20,102 @@ public enum State
 public class GameState
 {
     public static GameState Instance = new GameState();
-    
-    public unsafe bool IsLoading { get { return *_isLoadingPtr; } set { *_isLoadingPtr = value; } }
-    
-    public unsafe State CurrentState { get { return (State)(*_currentStatePtr); } set { *_currentStatePtr = (int)value; } }
 
-    public unsafe int Lives { get { return *_livesPtr; } set { *_livesPtr = value; } }
-    
-    public unsafe int Rings { get { return *_ringsPtr; } set { *_ringsPtr = value; } }
-    
-    public unsafe int Checkpoint { get { return *_checkpointPtr; } set { *_checkpointPtr = value; } }
-    
-    public unsafe int BossHealth { get { return *_bossHealthPtr; } set { *_bossHealthPtr = value; } }
+    public unsafe bool IsLoading
+    {
+        get
+        {
+            if (_unsupportedPlatform)
+                return default(bool);
+            return *_isLoadingPtr;
+        }
+        set
+        {
+            if (_unsupportedPlatform)
+                return;
+            *_isLoadingPtr = value;
+        }
+    }
+
+    public unsafe State CurrentState
+    {
+        get
+        {
+            if (_unsupportedPlatform)
+                return default(State);
+            return (State)(*_currentStatePtr);
+        }
+        set
+        {
+            if (_unsupportedPlatform)
+                return;
+            *_currentStatePtr = (int)value;
+        }
+    }
+
+    public unsafe int Lives
+    {
+        get
+        {
+            if (_unsupportedPlatform)
+                return default(int);
+            return *_livesPtr;
+        }
+        set
+        {
+            if (_unsupportedPlatform)
+                return;
+            *_livesPtr = value;
+        }
+    }
+
+    public unsafe int Rings
+    {
+        get
+        {
+            if (_unsupportedPlatform)
+                return default(int);
+            return *_ringsPtr;
+        }
+        set
+        {
+            if (_unsupportedPlatform)
+                return;
+            *_ringsPtr = value;
+        }
+    }
+
+    public unsafe int Checkpoint
+    {
+        get
+        {
+            if (_unsupportedPlatform)
+                return default(int);
+            return *_checkpointPtr;
+        }
+        set
+        {
+            if (_unsupportedPlatform)
+                return;
+            *_checkpointPtr = value;
+        }
+    }
+
+    public unsafe int BossHealth
+    {
+        get
+        {
+            if (_unsupportedPlatform)
+                return default(int);
+            return *_bossHealthPtr;
+        }
+        set
+        {
+            if (_unsupportedPlatform)
+                return;
+            *_bossHealthPtr = value;
+        }
+    }
 
     private IntPtr _rawIntPtr;
     
@@ -67,6 +151,7 @@ public class GameState
     private unsafe int* _checkpointPtr;
     private unsafe int* _bossHealthPtr;
 
+    private bool _unsupportedPlatform = false;
 
     private unsafe GameState()
     {
@@ -76,13 +161,37 @@ public class GameState
         _rawIntPtr = Marshal.AllocHGlobal(GameStateSize);
         _rawPtr = _rawIntPtr.ToPointer();
 
-        _isLoadingPtr = (bool*)((int)_rawPtr + IsLoadingOffset);
-        _currentStatePtr = (int*)((int)_rawPtr + CurrentStateOffset);
-        
-        _livesPtr = (int*)((int)_rawPtr + LivesOffset);
-        _ringsPtr = (int*)((int)_rawPtr + RingsOffset);
-        _checkpointPtr = (int*)((int)_rawPtr + CheckpointOffset);
-        _bossHealthPtr = (int*)((int)_rawPtr + BossHealthOffset);
+        IntPtr endSignaturePtr = IntPtr.Zero;
+
+        if (IntPtr.Size == SizeOfInt)
+        {
+            endSignaturePtr = new IntPtr(_rawIntPtr.ToInt32() + EndSignatureOffset);
+
+            _isLoadingPtr = (bool*)((int)_rawPtr + IsLoadingOffset);
+            _currentStatePtr = (int*)((int)_rawPtr + CurrentStateOffset);
+
+            _livesPtr = (int*)((int)_rawPtr + LivesOffset);
+            _ringsPtr = (int*)((int)_rawPtr + RingsOffset);
+            _checkpointPtr = (int*)((int)_rawPtr + CheckpointOffset);
+            _bossHealthPtr = (int*)((int)_rawPtr + BossHealthOffset);
+        }
+        else if (IntPtr.Size == SizeOfLong)
+        {
+            endSignaturePtr = new IntPtr(_rawIntPtr.ToInt64() + EndSignatureOffset);
+
+            _isLoadingPtr = (bool*)((long)_rawPtr + IsLoadingOffset);
+            _currentStatePtr = (int*)((long)_rawPtr + CurrentStateOffset);
+
+            _livesPtr = (int*)((long)_rawPtr + LivesOffset);
+            _ringsPtr = (int*)((long)_rawPtr + RingsOffset);
+            _checkpointPtr = (int*)((long)_rawPtr + CheckpointOffset);
+            _bossHealthPtr = (int*)((long)_rawPtr + BossHealthOffset);
+        }
+        else
+        {
+            _unsupportedPlatform = true;
+            Debug.Log("GameState: Platform not supported, the public GameState will not be updated");
+        }
 
         CurrentState = State.InitializingGame;
 
@@ -91,7 +200,7 @@ public class GameState
         Marshal.Copy(zeroBytes, 0, _rawIntPtr, GameStateSize);
         
         Marshal.Copy(signatureBytes, 0, _rawIntPtr, signatureBytes.Length);
-        Marshal.Copy(signatureEndBytes, 0, new IntPtr(_rawIntPtr.ToInt32() + EndSignatureOffset), signatureEndBytes.Length);
+        Marshal.Copy(signatureEndBytes, 0, endSignaturePtr, signatureEndBytes.Length);
     }
 
     ~GameState()
