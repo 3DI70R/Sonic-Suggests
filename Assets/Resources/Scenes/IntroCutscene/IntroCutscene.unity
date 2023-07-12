@@ -4030,7 +4030,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 478145898}
-  m_LocalRotation: {x: 0.003645241, y: 0.12186961, z: -0.0004475833, w: 0.9925394}
+  m_LocalRotation: {x: 0.0036272313, y: 0.12191434, z: -0.00044553718, w: 0.9925339}
   m_LocalPosition: {x: -12.063857, y: -1.3709999, z: -6.6636086}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4362,7 +4362,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 724191080}
-  m_LocalRotation: {x: -0.03335154, y: 0.5394045, z: -0.02138504, w: -0.8411142}
+  m_LocalRotation: {x: -0.033358995, y: 0.5392718, z: -0.021376427, w: -0.8411993}
   m_LocalPosition: {x: -8.450138, y: -1.627, z: -6.3086987}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6628,7 +6628,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: '3DI70R, 2018
 
-    version 1.1'
+    version 1.2'
 --- !u!222 &1525882338
 CanvasRenderer:
   m_ObjectHideFlags: 0
