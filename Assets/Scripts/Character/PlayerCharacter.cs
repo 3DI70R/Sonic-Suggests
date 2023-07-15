@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable, IPickUpCollector, IDrownable {
@@ -28,7 +29,27 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
     private float respawnTime;
     private bool silentRespawn;
 
-    private void Update() {
+    private GameState state;
+
+    private void Start()
+    {
+        if (name == "Player")
+        {
+            state = GameState.Instance;
+
+            state.IsLoading = false;
+            
+            state.CurrentState = State.InGame;
+            
+            state.Rings = 0;
+            state.Lives = lifeCount;
+
+            state.Checkpoint = 0;
+        }
+    }
+
+    private void Update()
+    {
         CheckForRespawn();
         UpdateMovement();
         CheckForHittable();
@@ -50,6 +71,11 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
 
                 ringCount = 0;
                 lifeCount--;
+                if (name == "Player")
+                {
+                    state.Rings = ringCount;
+                    state.Lives = lifeCount;
+                }
                 
                 characterRenderer.enabled = true;
                 
@@ -169,6 +195,8 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
                 audioSource.PlayOneShot(ringLossSound);
                 invisibilityTime = 5f;
                 ringCount = 0;
+                if (name == "Player")
+                    state.Rings = ringCount;
             } else {
                 audioSource.PlayOneShot(deathSound);
                 Kill();
@@ -179,6 +207,8 @@ public class PlayerCharacter : MonoBehaviour, ISpringActivator, IPlayerHittable,
     public void OnPickUpCollected(GameObject pickUpObject) {
         if(pickUpObject.GetComponent<Ring>()) {
             ringCount++;
+            if (name == "Player")
+                state.Rings++;
         }
     }
 
